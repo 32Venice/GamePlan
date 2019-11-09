@@ -30,10 +30,8 @@ const eventSchema = new Schema({
   eventType: String,
   shoppingList: [
     {
-      item: {
-        itemName: String,
-        itemLikes: Number
-      },
+      itemName: String,
+      itemLikes: Number,
       itemClaimed: Boolean,
       itemClaimedBy: String,
       boozable: Boolean
@@ -41,10 +39,8 @@ const eventSchema = new Schema({
   ],
   activity: [
     {
-      activity: {
-        activityName: String,
-        activityLikes: Number
-      },
+      activityName: String,
+      activityLikes: Number,
       activityClaimed: Boolean,
       activityClaimedBy: String
     }

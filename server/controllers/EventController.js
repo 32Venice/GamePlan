@@ -51,4 +51,26 @@ EventController.addEvent = (req, res, next) => {
   });
 };
 
+EventController.getSingleEvent = (req, res, next) => {
+  console.log('get single event');
+
+  console.log(req.body);
+
+  const { event_id } = req.body;
+
+  Event.findById({ _id: event_id }, (err, data) => {
+    console.log('inside here');
+    if (err) {
+      res.locals.error = err;
+      res.locals.success = false;
+      return next();
+    }
+    console.log('inside event get single');
+    console.log('data', data);
+    res.locals.success = true;
+    res.locals.event = data;
+    return next();
+  });
+};
+
 module.exports = EventController;

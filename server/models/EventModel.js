@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const MONGO_URI =
-  "mongodb+srv://karlsonx:vRfJFH9OhoA7qwrf@cluster0-adsiz.mongodb.net/test?retryWrites=true&w=majority";
+  'mongodb+srv://karlsonx:vRfJFH9OhoA7qwrf@cluster0-adsiz.mongodb.net/test?retryWrites=true&w=majority';
 
 mongoose
   .connect(MONGO_URI, {
@@ -9,9 +9,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // sets the name of the DB that our collections are part of
-    dbName: "GamePlan"
+    dbName: 'GamePlan'
   })
-  .then(() => console.log("Connected to Mongo DB."))
+  .then(() => console.log('Connected to Mongo DB.'))
   .catch(err => console.log(err));
 
 const Schema = mongoose.Schema;
@@ -58,5 +58,5 @@ const eventSchema = new Schema({
   ]
 });
 
-const Event = mongoose.model("event", eventSchema);
+const Event = mongoose.model('event', eventSchema);
 module.exports = Event;

@@ -6,7 +6,7 @@ const app = express();
 
 const PORT = 3000;
 
-const eventsController = require('./controllers/EventController.js');
+const eventRouter = require('./routers/EventRouter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,11 +16,7 @@ app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
-app.post('/events', eventsController.addEvent, (req, res) => {
-  console.log('In post request');
-  //   res.json(res.locals.events);
-  res.status(200).json(res.locals.events);
-});
+app.use('/events', eventRouter);
 
 /**
  * 404 handler

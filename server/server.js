@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 app.post('/events', eventsController.addEvent, (req, res) => {
   console.log('In post request');
   //   res.json(res.locals.events);
-  res.status(200).send(res);
+  res.status(200).json(res.locals.events);
 });
 
 /**

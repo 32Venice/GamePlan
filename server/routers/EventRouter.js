@@ -11,4 +11,11 @@ router.post('/addevent', eventController.addEvent, (req, res) => {
   } else res.status(400).json(res.locals.error);
 });
 
+router.get('/singleevent', eventController.getSingleEvent, (req, res) => {
+  console.log('in router get single event');
+  if (res.locals.success) {
+    res.status(200).json(res.locals.event);
+  } else res.status(400).json(res.locals.error);
+});
+
 module.exports = router;

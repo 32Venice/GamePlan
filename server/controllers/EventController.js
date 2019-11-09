@@ -1,11 +1,11 @@
-const Event = require("../models/EventModel");
+const Event = require('../models/EventModel');
 
 const EventController = {};
 
 // ---ADD-EVENT--------------------------------------------------
 
 EventController.addEvent = (req, res, next) => {
-  console.log("add event");
+  console.log('add event');
   const {
     eventName
     // eventHost.user_name,
@@ -18,6 +18,7 @@ EventController.addEvent = (req, res, next) => {
     if (err) {
       res.status(418);
     }
+    console.log(data);
     res.locals.events = data;
     // res.status(200).send(data);
     return next();

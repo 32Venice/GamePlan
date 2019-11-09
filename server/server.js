@@ -1,31 +1,30 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 const PORT = 3000;
 
-const shoppingListRouter = require("./routers/ShoppingListRouter");
+const shoppingListRouter = require('./routers/ShoppingListRouter');
 const eventRouter = require('./routers/EventRouter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/shoppinglist", shoppingListRouter);
-
-app.get("/", (req, res) => {
-  console.log("In get request");
-  res.status(200).sendFile(path.resolve(__dirname, "../index.html"));
+app.get('/', (req, res) => {
+  console.log('In get request');
+  res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
 
 app.use('/events', eventRouter);
+app.use('/shoppinglist', shoppingListRouter);
 
 /**
  * 404 handler
  */
-app.use("*", (req, res) => {
-  res.status(404).send("Not Found");
+app.use('*', (req, res) => {
+  res.status(404).send('Not Found');
 });
 
 /**
@@ -33,7 +32,7 @@ app.use("*", (req, res) => {
  */
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send("Internal Server Error");
+  res.status(500).send('Internal Server Error');
 });
 
 app.listen(PORT, () => {

@@ -8,11 +8,13 @@ const PORT = 3000;
 
 const shoppingListRouter = require("./routers/ShoppingListRouter");
 const eventRouter = require('./routers/EventRouter');
+const activitiesRouter = require("./routers/ActivitiesRouter");
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/shoppinglist", shoppingListRouter);
+
 
 app.get("/", (req, res) => {
   console.log("In get request");
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 });
 
 app.use('/events', eventRouter);
+app.use("/shoppinglist", shoppingListRouter);
+app.use("/activities", activitiesRouter);
 
 /**
  * 404 handler

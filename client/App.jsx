@@ -23,22 +23,35 @@ class App extends Component {
         <div className="row">
           <span>
             <div id="RSVPBox" className="container">
-              <div className="RSVPList">
-                {Guests}
-              </div>
+              <div className="RSVPList">{Guests}</div>
               <div className="createGuest">
                 <button className="addButton">Add Guest</button>
-                <input/>
+                <input />
               </div>
             </div>
           </span>
           <span>
             <div className="container">
-              <div><span>Party Name:</span><span></span></div>
-              <div><span>Host:</span><span></span></div>
-              <div><span>Address:</span><span></span></div>
-              <div><span>Type:</span><span></span></div>
-              <div><span>Info:</span><span></span></div>
+              <div>
+                <span>Party Name:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Host:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Address:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Type:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Info:</span>
+                <span></span>
+              </div>
             </div>
           </span>
         </div>
@@ -49,12 +62,10 @@ class App extends Component {
         <div className="row">
           <span>
             <div id="suppliesBox" className="container">
-              <div className="supplyList">
-                {Supplies}
-              </div>
-              <div className="createSupplies" >
+              <div className="supplyList">{Supplies}</div>
+              <div className="createSupplies">
                 <button className="addButton">Add Supplies</button>
-                <input/>
+                <input />
               </div>
             </div>
           </span>
@@ -67,8 +78,12 @@ class App extends Component {
           <span className="title">Comments</span>
         </div>
         <div className="row">
-          <span><div className="container"></div></span>
-          <span><div className="container"></div></span>
+          <span>
+            <div className="container"></div>
+          </span>
+          <span>
+            <div className="container"></div>
+          </span>
         </div>
       </div>
     );

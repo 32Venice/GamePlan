@@ -10,7 +10,6 @@ const shoppingListRouter = require('./routers/ShoppingListRouter');
 const eventRouter = require('./routers/EventRouter');
 const activitiesRouter = require('./routers/ActivitiesRouter');
 const userRouter = require('./routers/UserRouter');
-const activitiesRouter = require('./routers/ActivitiesRouter');
 const rsvpRouter = require('./routers/RsvpRouter');
 
 app.use(bodyParser.json());

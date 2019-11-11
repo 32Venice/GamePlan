@@ -5,7 +5,6 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import './styles/styles.scss';
-import axios from 'axios';
 
 import Home from './components/home/Home';
 import Signup from './components/signup/Signup';

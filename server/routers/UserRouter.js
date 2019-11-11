@@ -15,4 +15,14 @@ router.post('/signup', userController.createUser, (req, res) => {
   // res.status(200).json(JSON.stringify({ success: res.locals.success }));
 });
 
+router.post('/login', userController.verifyUser, (req, res) => {
+  console.log('signing in');
+
+  if (res.locals.success)
+    return res.status(200).json({ user_id: res.locals.id });
+  else {
+    res.status(400).json(res.locals.error);
+  }
+});
+
 module.exports = router;

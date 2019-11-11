@@ -1,13 +1,12 @@
-const Event = require('../models/EventModel');
+const Event = require("../models/EventModel");
 
 const EventController = {};
 
 // ---ADD-EVENT--------------------------------------------------
 
 EventController.addEvent = (req, res, next) => {
-  console.log('add event');
+  console.log("add event");
 
-  console.log(req.body);
   const {
     eventName,
     eventHost,
@@ -17,11 +16,12 @@ EventController.addEvent = (req, res, next) => {
     eventType
   } = req.body;
 
+  console.log("REQ -----> ", req.body);
   const createdDate = new Date();
   const eventDate = new Date();
 
-  console.log(createdDate);
-  console.log(eventDate);
+  // console.log(createdDate);
+  // console.log(eventDate);
 
   const query = {
     eventName,
@@ -34,17 +34,17 @@ EventController.addEvent = (req, res, next) => {
     eventType
   };
 
-  console.log(query);
+  console.log("QUERY -------->", query);
 
   Event.create(query, (err, data) => {
-    console.log('inside here');
+    // console.log("inside here");
     if (err) {
       res.locals.error = err;
       res.locals.success = false;
       return next();
     }
-    console.log('inside event create');
-    console.log('data', data);
+    // console.log("inside event create");
+    // console.log("data", data);
     res.locals.success = true;
     res.locals.event = data;
     return next();
@@ -52,21 +52,21 @@ EventController.addEvent = (req, res, next) => {
 };
 
 EventController.getSingleEvent = (req, res, next) => {
-  console.log('get single event');
+  console.log("get single event");
 
   console.log(req.body);
 
   const { event_id } = req.body;
 
   Event.findById({ _id: event_id }, (err, data) => {
-    console.log('inside here');
+    console.log("inside here");
     if (err) {
       res.locals.error = err;
       res.locals.success = false;
       return next();
     }
-    console.log('inside event get single');
-    console.log('data', data);
+    console.log("inside event get single");
+    console.log("data", data);
     res.locals.success = true;
     res.locals.event = data;
     return next();

@@ -1,30 +1,30 @@
-const Event = require("../models/EventModel");
+const Event = require('../models/EventModel');
 
 const ShoppingListController = {};
 
 ShoppingListController.addItem = (req, res, next) => {
-  console.log("in ShoppingListController.addItem");
+  console.log('in ShoppingListController.addItem');
   const { item, event_id } = req.body;
   console.log(req.body);
 
-  item["itemLikes"] = 0;
-  item["itemClaimed"] = false;
-  console.log("ITEM CLAIMEDBY", item.itemClaimedBy);
-  if (!item.itemClaimedBy) item["itemClaimedBy"] = "";
+  item['itemLikes'] = 0;
+  item['itemClaimed'] = false;
+  console.log('ITEM CLAIMEDBY', item.itemClaimedBy);
+  if (!item.itemClaimedBy) item['itemClaimedBy'] = '';
 
   console.log(item);
   Event.findOneAndUpdate(
     { _id: event_id },
     { $push: { shoppingList: item } },
-      {new: true},
+    { new: true },
     (err, data) => {
-      console.log("MY DATA ---> ", data);
+      console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
         res.locals.success = false;
         return next();
       }
-      console.log("ITS NOT IN ERROR ");
+      console.log('ITS NOT IN ERROR ');
       res.locals.items = data;
       res.locals.success = true;
       return next();
@@ -40,7 +40,7 @@ ShoppingListController.getItems = (req, res, next) => {
       res.locals.success = false;
       return next();
     }
-    console.log("MY DATA ---> ", data.shoppingList);
+    console.log('MY DATA ---> ', data.shoppingList);
     res.locals.items = data.shoppingList;
     res.locals.success = true;
     return next();
@@ -52,15 +52,15 @@ ShoppingListController.deleteItem = (req, res, next) => {
   Event.findOneAndUpdate(
     { _id: event_id },
     { $pull: { shoppingList: item } },
-      {new: true},
+    { new: true },
     (err, data) => {
-      console.log("MY DATA ---> ", data);
+      console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
         res.locals.success = false;
         return next();
       }
-      console.log("ITS NOT IN ERROR ");
+      console.log('ITS NOT IN ERROR ');
       res.locals.items = data;
       res.locals.success = true;
       return next();
@@ -69,19 +69,21 @@ ShoppingListController.deleteItem = (req, res, next) => {
 };
 
 ShoppingListController.updateItem = (req, res, next) => {
-  console.log("in ShoppingListController.updateItem");
+  console.log('in ShoppingListController.updateItem');
   const { event_id, item } = req.body;
 
-  const tempItem = {};
-  tempItem["itemName"] = item.itemName;
-  tempItem["itemClaimedBy"] = "";
-  tempItem["itemClaimed"] = false;
+  console.log(item);
 
-  console.log("tempItem ------->", tempItem);
+  const tempItem = {};
+  tempItem['itemName'] = item.itemName;
+  tempItem['itemClaimedBy'] = '';
+  tempItem['itemClaimed'] = false;
+
+  console.log('tempItem ------->', tempItem);
   Event.findOneAndUpdate(
     { _id: event_id },
     { $pull: { shoppingList: tempItem } },
-      {new: true},
+    { new: true },
     (err, data) => {
       if (err) {
         res.locals.error = err;
@@ -91,7 +93,7 @@ ShoppingListController.updateItem = (req, res, next) => {
       Event.findOneAndUpdate(
         { _id: event_id },
         { $push: { shoppingList: item } },
-          {new: true},
+        { new: true },
         (err, data) => {
           if (err) {
             res.locals.error = err;
@@ -105,7 +107,7 @@ ShoppingListController.updateItem = (req, res, next) => {
       );
     }
   );
-  console.log("item ------->", item);
+  console.log('item ------->', item);
 
   // .findOneAndUpdate(
   //   { itemName: item },

@@ -1,27 +1,27 @@
-const Event = require("../models/EventModel");
+const Event = require('../models/EventModel');
 
 const ActivitiesController = {};
 
 ActivitiesController.addItem = (req, res, next) => {
-  console.log("in ActivitiesController.addItem");
+  console.log('in ActivitiesController.addItem');
   const { item, event_id } = req.body;
   console.log(req.body);
 
-  item["activityLikes"] = 0;
-  item["activityClaimed"] = false;
-  item["activityClaimedBy"] = "";
+  item['activityLikes'] = 0;
+  item['activityClaimed'] = false;
+  item['activityClaimedBy'] = '';
 
   Event.findOneAndUpdate(
     { _id: event_id },
     { $push: { activity: item } },
     (err, data) => {
-      console.log("MY DATA ---> ", data);
+      console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
         res.locals.success = false;
         return next();
       }
-      console.log("ITS NOT IN ERROR ");
+      console.log('ITS NOT IN ERROR ');
       res.locals.activity = data;
       res.locals.success = true;
       return next();
@@ -37,7 +37,7 @@ ActivitiesController.getItems = (req, res, next) => {
       res.locals.success = false;
       return next();
     }
-    console.log("MY DATA ---> ", data.activity);
+    console.log('MY DATA ---> ', data.activity);
     res.locals.activity = data.activity;
     res.locals.success = true;
     return next();
@@ -50,13 +50,13 @@ ActivitiesController.deleteItem = (req, res, next) => {
     { _id: event_id },
     { $pull: { activity: item } },
     (err, data) => {
-      console.log("MY DATA ---> ", data);
+      console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
         res.locals.success = false;
         return next();
       }
-      console.log("ITS NOT IN ERROR ");
+      console.log('ITS NOT IN ERROR ');
       res.locals.activity = data;
       res.locals.success = true;
       return next();

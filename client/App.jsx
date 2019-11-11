@@ -11,13 +11,21 @@ class App extends Component {
     this.createEvent = this.createEvent.bind(this);
   }
 
-  createEvent(e) {
-    axios("/events/addevent")
+  createEvent(name, host, address, descr, cont, type) {
+    axios
+      .post("/events/addevent", {
+        eventName: name,
+        eventHost: host,
+        eventAddress: address,
+        eventDescr: descr,
+        contact: cont,
+        eventType: type
+      })
       .then(res => {
         return res.json();
       })
       .then(data => {
-        console.log(data);
+        // console.log(data);
       })
       .catch(err => console.log("ERROR"));
   }

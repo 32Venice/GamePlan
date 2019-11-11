@@ -7,9 +7,9 @@ ActivitiesController.addItem = (req, res, next) => {
   const { item, event_id } = req.body;
   console.log(req.body);
 
-  //   item[activityLikes] = 0;
-  //   item[activityClaimed] = false;
-  //   item[activityClaimedBy] = "";
+  item["activityLikes"] = 0;
+  item["activityClaimed"] = false;
+  item["activityClaimedBy"] = "";
 
   Event.findOneAndUpdate(
     { _id: event_id },

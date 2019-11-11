@@ -4,7 +4,7 @@ const shoppingListController = require("../controllers/ShoppingListController");
 
 const router = express.Router();
 
-router.get("/", shoppingListController.getItems, (req, res) =>
+router.post("/", shoppingListController.getItems, (req, res) =>
   res.status(200).json(res.locals.items)
 );
 

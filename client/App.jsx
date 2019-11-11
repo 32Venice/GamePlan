@@ -3,16 +3,46 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import './styles/styles.scss';
+import SuppliesBox from "./components/SuppliesBox";
+import RSVPBox from "./components/RSVPBox";
+import ActivityBox from "./components/ActivityBox";
+import EventInfo from "./components/EventInfo";
+
+
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      Supplies: [],
+      Activities: [],
+      Guests: [],
+      claimedBy: ''
+    };
+  }
+
+
+  // claimUpdate() {
+  //
+  // }
+  //
+  // claim() {
+  //
+  // }
+
+  componentDidMount() {
+    axios('/shoppinglist')
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          // this.setState({ Supplies: [...data] });
+          console.log(data)
+        })
+        .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
   }
 
   render() {
-    const Guests = [];
-    const Supplies = [];
 
     return (
       <div>
@@ -22,15 +52,7 @@ class App extends Component {
         </div>
         <div className="row">
           <span>
-            <div id="RSVPBox" className="container">
-              <div className="RSVPList">
-                {Guests}
-              </div>
-              <div className="createGuest">
-                <button className="addButton">Add Guest</button>
-                <input/>
-              </div>
-            </div>
+            <RSVPBox Guests={this.state.Guests} id="RSVPBox" className="container" />
           </span>
           <span>
             <div className="container">
@@ -48,18 +70,10 @@ class App extends Component {
         </div>
         <div className="row">
           <span>
-            <div id="suppliesBox" className="container">
-              <div className="supplyList">
-                {Supplies}
-              </div>
-              <div className="createSupplies" >
-                <button className="addButton">Add Supplies</button>
-                <input/>
-              </div>
-            </div>
+            <SuppliesBox claim={this.claim} claimUpdate={this.claimUpdate} Supplies={this.state.Supplies} id="suppliesBox" className="container" />
           </span>
           <span>
-            <div className="container"></div>
+            <ActivityBox Activities={this.state.Activities} className="container" />
           </span>
         </div>
         <div className="row">

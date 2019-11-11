@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 // const css = require('file.css');
 
-// console.log(process.env.NODE_ENV);
 
 module.exports = {
   entry: './client/index.js',

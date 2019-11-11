@@ -9,6 +9,7 @@ const PORT = 3000;
 const shoppingListRouter = require('./routers/ShoppingListRouter');
 const eventRouter = require('./routers/EventRouter');
 const activitiesRouter = require('./routers/ActivitiesRouter');
+const userRouter = require('./routers/UserRouter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 app.use('/events', eventRouter);
 app.use('/shoppinglist', shoppingListRouter);
 app.use('/activities', activitiesRouter);
+app.use('/user', userRouter);
 
 /**
  * 404 handler

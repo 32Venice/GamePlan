@@ -8,6 +8,7 @@ import './styles/styles.scss';
 
 import Home from './components/home/Home';
 import Signup from './components/signup/Signup';
+import Login from './components/login/Login';
 
 class App extends Component {
   constructor(props) {
@@ -172,14 +173,30 @@ class App extends Component {
     return (
       <div>
         <Switch>
+          {/* Home Route will render on initial load of page */}
           <Route exact path="/" component={Home} />
 
+          {/* Signup Route */}
           <Route
             exact
             path="/signup"
             render={props => (
               <Signup
                 submitSignUpHandler={this.submitSignUpHandler}
+                usernameChangeHandler={this.usernameChangeHandler}
+                passwordChangeHandler={this.passwordChangeHandler}
+                username={this.state.username}
+                password={this.state.password}
+              />
+            )}
+          />
+          {/* Login Route */}
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login
+                submitLoginHandler={this.submitLoginHandler}
                 usernameChangeHandler={this.usernameChangeHandler}
                 passwordChangeHandler={this.passwordChangeHandler}
                 username={this.state.username}

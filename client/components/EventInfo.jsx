@@ -1,6 +1,7 @@
 import React from "react";
 
 const EventInfo = props => {
+
   let partyName;
   let host;
   let address;
@@ -21,5 +22,6 @@ const EventInfo = props => {
     </div>
   );
 };
+
 
 export default EventInfo;

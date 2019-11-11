@@ -51,6 +51,7 @@ input {
 
 .supplyList {
   display: flex;
+  flex-direction: column;
 }
 
 #suppliesBox {

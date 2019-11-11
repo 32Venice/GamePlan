@@ -16,6 +16,7 @@ ShoppingListController.addItem = (req, res, next) => {
   Event.findOneAndUpdate(
     { _id: event_id },
     { $push: { shoppingList: item } },
+      {new: true},
     (err, data) => {
       console.log("MY DATA ---> ", data);
       if (err) {
@@ -51,6 +52,7 @@ ShoppingListController.deleteItem = (req, res, next) => {
   Event.findOneAndUpdate(
     { _id: event_id },
     { $pull: { shoppingList: item } },
+      {new: true},
     (err, data) => {
       console.log("MY DATA ---> ", data);
       if (err) {
@@ -73,11 +75,13 @@ ShoppingListController.updateItem = (req, res, next) => {
   const tempItem = {};
   tempItem["itemName"] = item.itemName;
   tempItem["itemClaimedBy"] = "";
+  tempItem["itemClaimed"] = false;
 
   console.log("tempItem ------->", tempItem);
   Event.findOneAndUpdate(
     { _id: event_id },
     { $pull: { shoppingList: tempItem } },
+      {new: true},
     (err, data) => {
       if (err) {
         res.locals.error = err;
@@ -87,6 +91,7 @@ ShoppingListController.updateItem = (req, res, next) => {
       Event.findOneAndUpdate(
         { _id: event_id },
         { $push: { shoppingList: item } },
+          {new: true},
         (err, data) => {
           if (err) {
             res.locals.error = err;

@@ -10,6 +10,8 @@ const shoppingListRouter = require('./routers/ShoppingListRouter');
 const eventRouter = require('./routers/EventRouter');
 const activitiesRouter = require('./routers/ActivitiesRouter');
 const userRouter = require('./routers/UserRouter');
+const activitiesRouter = require('./routers/ActivitiesRouter');
+const rsvpRouter = require('./routers/RsvpRouter');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +25,7 @@ app.use('/events', eventRouter);
 app.use('/shoppinglist', shoppingListRouter);
 app.use('/activities', activitiesRouter);
 app.use('/user', userRouter);
+app.use('/rsvp', rsvpRouter);
 
 /**
  * 404 handler

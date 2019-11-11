@@ -7,10 +7,12 @@ ShoppingListController.addItem = (req, res, next) => {
   const { item, event_id } = req.body;
   console.log(req.body);
 
-  item[itemLikes] = 0;
-  item[itemClaimed] = false;
-  item[itemClaimedBy] = "";
+  item["itemLikes"] = 0;
+  item["itemClaimed"] = false;
+  console.log("ITEM CLAIMEDBY", item.itemClaimedBy);
+  if (!item.itemClaimedBy) item["itemClaimedBy"] = "";
 
+  console.log(item);
   Event.findOneAndUpdate(
     { _id: event_id },
     { $push: { shoppingList: item } },
@@ -64,23 +66,59 @@ ShoppingListController.deleteItem = (req, res, next) => {
   );
 };
 
-// ----UPDATE-ITEMS----------------------------------------
+ShoppingListController.updateItem = (req, res, next) => {
+  console.log("in ShoppingListController.updateItem");
+  const { event_id, item } = req.body;
 
-// ShoppingListController.updateItem = (req, res, next) => {
-//   const curAssignee = req.params.name;
-//   const newAssignee = req.params.claimedBy;
-//   Event.findOneAndUpdate(
-//     { itemClaimedBy: curAssignee },
-//     { itemClaimedBy: newAssignee },
-//     (err, data) => {
-//       if (data) {
-//         res.itemClaimedBy = req.body;
-//         res.status(200).send(data);
-//       } else {
-//         res.status(418);
-//       }
-//     }
-//   );
-// };
+  const tempItem = {};
+  tempItem["itemName"] = item.itemName;
+  tempItem["itemClaimedBy"] = "";
+
+  console.log("tempItem ------->", tempItem);
+  Event.findOneAndUpdate(
+    { _id: event_id },
+    { $pull: { shoppingList: tempItem } },
+    (err, data) => {
+      if (err) {
+        res.locals.error = err;
+        res.locals.success = false;
+        return next();
+      }
+      Event.findOneAndUpdate(
+        { _id: event_id },
+        { $push: { shoppingList: item } },
+        (err, data) => {
+          if (err) {
+            res.locals.error = err;
+            res.locals.success = false;
+            return next();
+          }
+          res.locals.items = data.shoppingList;
+          res.locals.success = true;
+          return next();
+        }
+      );
+    }
+  );
+  console.log("item ------->", item);
+
+  // .findOneAndUpdate(
+  //   { itemName: item },
+  //   { $set: { itemClaimedBy: claimedBy } },
+  //   (err, data) => {
+  //     console.log("MY DATA ---> ", data);
+  //     if (err) {
+  //       console.log("ERROR ---> ", err);
+  //       res.locals.error = err;
+  //       res.locals.success = false;
+  //       return next();
+  //     }
+  //     console.log("ITS NOT IN ERROR ");
+  //     res.locals.items = data;
+  //     res.locals.success = true;
+  //     return next();
+  //   }
+  // );
+};
 
 module.exports = ShoppingListController;

@@ -5,10 +5,12 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import './styles/styles.scss';
+import axios from 'axios';
 
 import Home from './components/home/Home';
 import Signup from './components/signup/Signup';
 import Login from './components/login/Login';
+import EventInfo from './components/EventInfo';
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +33,19 @@ class App extends Component {
 
     // this.addItem = this.addItem.bind(this);
     // this.deleteItem = this.deleteItem.bind(this);
+
+    this.createEvent = this.createEvent.bind(this);
+  }
+
+  createEvent(e) {
+    axios('/events/addevent')
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.log('ERROR'));
   }
 
   usernameChangeHandler(event) {
@@ -262,7 +277,8 @@ class App extends Component {
             </div>
           </span>
           <span>
-            <div className="container">
+            <EventInfo createEvent={this.createEvent}></EventInfo>
+            {/* <div className="container">
               <div>
                 <span>Party Name:</span>
                 <span></span>
@@ -283,7 +299,7 @@ class App extends Component {
                 <span>Info:</span>
                 <span></span>
               </div>
-            </div>
+            </div> */}
           </span>
         </div>
         <div className="row">

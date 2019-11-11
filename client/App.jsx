@@ -7,11 +7,19 @@ import axios from 'axios';
 import './styles/styles.scss';
 
 import Home from './components/home/Home';
+import Signup from './components/signup/Signup';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      username: '',
+      password: ''
+    };
+
+    this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
+    this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
+    this.submitSignUpHandler = this.submitSignUpHandler.bind(this);
     // this.state = {
     //   event_id: '5dc73845e648f477e4848644',
     //   items: [],
@@ -20,6 +28,54 @@ class App extends Component {
 
     // this.addItem = this.addItem.bind(this);
     // this.deleteItem = this.deleteItem.bind(this);
+  }
+
+  usernameChangeHandler(event) {
+    this.setState({
+      username: event.target.value
+    });
+  }
+
+  passwordChangeHandler(event) {
+    this.setState({
+      password: event.target.value
+    });
+  }
+
+  submitSignUpHandler(event) {
+    event.preventDefault();
+
+    axios
+      .post(
+        'user/signup',
+        {
+          username: this.state.username,
+          password: this.state.password
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then(res => {
+        console.log('frontend');
+        console.log(res);
+        console.log(res.data);
+        if (res.status === 200) return this.props.history.push('/login');
+        return this.props.history.push('/signup');
+      })
+      .catch(err => {
+        console.log('error axios');
+        console.log(err);
+      })
+      .finally(() => {
+        this.setState({
+          username: '',
+          password: ''
+        });
+      });
   }
 
   // Add back to create when frontend component is done to be able to test
@@ -117,6 +173,20 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path="/" component={Home} />
+
+          <Route
+            exact
+            path="/signup"
+            render={props => (
+              <Signup
+                submitSignUpHandler={this.submitSignUpHandler}
+                usernameChangeHandler={this.usernameChangeHandler}
+                passwordChangeHandler={this.passwordChangeHandler}
+                username={this.state.username}
+                password={this.state.password}
+              />
+            )}
+          />
         </Switch>
         <div className="row">
           <span className="title">RSVP</span>

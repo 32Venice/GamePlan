@@ -1,7 +1,5 @@
 const express = require('express');
-
 const eventController = require('../controllers/EventController');
-
 const router = express.Router();
 
 router.post('/addevent', eventController.addEvent, (req, res) => {

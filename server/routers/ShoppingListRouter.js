@@ -1,7 +1,5 @@
 const express = require("express");
-
 const shoppingListController = require("../controllers/ShoppingListController");
-
 const router = express.Router();
 
 router.post("/", shoppingListController.getItems, (req, res) =>
@@ -26,3 +24,4 @@ router.delete("/deleteItem", shoppingListController.deleteItem, (req, res) =>
 );
 
 module.exports = router;
+

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
+
 import axios from 'axios';
 
 import './styles/styles.scss';
+
+import Home from './components/home/Home';
 
 class App extends Component {
   constructor(props) {
@@ -111,6 +115,9 @@ class App extends Component {
 
     return (
       <div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+        </Switch>
         <div className="row">
           <span className="title">RSVP</span>
           <span className="title">Event Info</span>
@@ -184,4 +191,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default withRouter(App);

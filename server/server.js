@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get("/", (req, res) => {
-  console.log("In get request");
+  // console.log("In get request");
   res.status(200).sendFile(path.resolve(__dirname, "../index.html"));
 });
 

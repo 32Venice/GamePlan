@@ -13,8 +13,8 @@ const SuppliesBox = props => {
             Claimed={props.Supplies[i].itemClaimed}
             ClaimedBy={props.Supplies[i].itemClaimedBy}
             Boozable={props.Supplies[i].boozable}
-            claimUpdate={props.claimUpdate}
-            claim={props.claim}/>);
+            claimChangeHandler={props.claimChangeHandler}
+            claimClickHandler={props.claimClickHandler}/>);
     }
 
     return (
@@ -23,8 +23,8 @@ const SuppliesBox = props => {
             {suppliesArr}
         </div>
         <div className="createSupplies" >
-            <button className="addButton">Add Supplies</button>
-            <input/>
+            <button onClick={props.SuppliesClickHandler} className="addButton">Add Supplies</button>
+            <input onChange={(e) => props.SuppliesChangeHandler(e.target.value)} />
         </div>
 </div>
 )

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import axios from 'axios';
 
@@ -9,7 +9,6 @@ import ActivityBox from "./components/ActivityBox";
 import EventInfo from "./components/EventInfo";
 
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,29 +16,72 @@ class App extends Component {
       Supplies: [],
       Activities: [],
       Guests: [],
-      claimedBy: ''
+      claimedBy: '',
+        newSupply: ''
     };
+  this.createEvent = this.createEvent.bind(this);
+  this.SuppliesChangeHandler = this.SuppliesChangeHandler.bind(this);
+  this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
+  this.claimChangeHandler = this.claimChangeHandler.bind(this);
+  this.claimClickHandler = this.claimClickHandler.bind(this);
   }
 
 
-  // claimUpdate() {
-  //
-  // }
-  //
-  // claim() {
-  //
-  // }
+    SuppliesClickHandler() {
+      const item = {};
+      item.itemName = this.state.newSupply;
+      axios.post('/shoppinglist/addItem', {event_id: '5dc9ae30a59286288c8bf539', item: item})
+          .then(res => {
+              console.log(res.data.shoppingList)
+              this.setState({
+                  newSupply: '',
+                  Supplies: [...res.data.shoppingList]
+              })
+          })
+    }
+
+    SuppliesChangeHandler(value) {
+        this.setState({newSupply: value})
+    }
+
+  claimChangeHandler(value) {
+      this.setState({claimedBy: value})
+  }
+
+  claimClickHandler(value) {
+      const item = {};
+      item.itemName = value;
+      item.itemClaimedBy = this.state.claimedBy;
+      console.log(item)
+      axios.put('/shoppinglist/updateItem', {event_id: '5dc9ae30a59286288c8bf539', item: item})
+          .then(res => {
+              console.log(res.data)
+              this.setState({
+                  claimedBy: '',
+                  Supplies: [...res.data.shoppingList]
+              })
+          })
+  }
 
   componentDidMount() {
-    axios('/shoppinglist')
+    axios.post('/shoppinglist/', {event_id: '5dc9ae30a59286288c8bf539'})
         .then(res => {
-          return res.json();
-        })
-        .then(data => {
-          // this.setState({ Supplies: [...data] });
-          console.log(data)
+            this.setState({ Supplies: [...res.data] })
         })
         .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
+
+  }
+
+  createEvent(e) {
+    axios("/events/addevent")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.log("ERROR"));
+
   }
 
   render() {
@@ -55,13 +97,7 @@ class App extends Component {
             <RSVPBox Guests={this.state.Guests} id="RSVPBox" className="container" />
           </span>
           <span>
-            <div className="container">
-              <div><span>Party Name:</span><span></span></div>
-              <div><span>Host:</span><span></span></div>
-              <div><span>Address:</span><span></span></div>
-              <div><span>Type:</span><span></span></div>
-              <div><span>Info:</span><span></span></div>
-            </div>
+            <EventInfo createEvent={this.createEvent}></EventInfo>
           </span>
         </div>
         <div className="row">
@@ -70,7 +106,7 @@ class App extends Component {
         </div>
         <div className="row">
           <span>
-            <SuppliesBox claim={this.claim} claimUpdate={this.claimUpdate} Supplies={this.state.Supplies} id="suppliesBox" className="container" />
+            <SuppliesBox SuppliesClickHandler={this.SuppliesClickHandler} SuppliesChangeHandler={this.SuppliesChangeHandler} claimClickHandler={this.claimClickHandler} claimChangeHandler={this.claimChangeHandler} Supplies={this.state.Supplies} id="suppliesBox" className="container" />
           </span>
           <span>
             <ActivityBox Activities={this.state.Activities} className="container" />
@@ -81,8 +117,12 @@ class App extends Component {
           <span className="title">Comments</span>
         </div>
         <div className="row">
-          <span><div className="container"></div></span>
-          <span><div className="container"></div></span>
+          <span>
+            <div className="container"></div>
+          </span>
+          <span>
+            <div className="container"></div>
+          </span>
         </div>
       </div>
     );

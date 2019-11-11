@@ -1,7 +1,10 @@
 const { Pool, Client } = require('pg');
 
 // Need to add Pool database server information
-const pool = new Pool();
+const pool = new Pool({
+  connectionString:
+    'postgres://taqaoqhk:4IUCWtGGcJ0Oy4EG6fefLYd56jPS21wD@salt.db.elephantsql.com:5432/taqaoqhk'
+});
 
 module.exports = {
   query: (text, params, callback) => {

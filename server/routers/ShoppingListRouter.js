@@ -1,7 +1,5 @@
 const express = require("express");
-
 const shoppingListController = require("../controllers/ShoppingListController");
-
 const router = express.Router();
 
 router.get("/", shoppingListController.getItems, (req, res) =>
@@ -17,12 +15,13 @@ router.post("/addItem", shoppingListController.addItem, (req, res) => {
   }
 });
 
-// router.put("/updateItem", shoppingListController.updateItem, (req, res) =>
-//   res.status(200).json([...res.locals.items])
-// );
+router.put("/updateItem", shoppingListController.updateItem, (req, res) =>
+  res.status(200).json(res.locals.items)
+);
 
 router.delete("/deleteItem", shoppingListController.deleteItem, (req, res) =>
   res.status(200).json(res.locals.items)
 );
 
 module.exports = router;
+

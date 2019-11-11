@@ -15,12 +15,14 @@ class App extends Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      userId: ''
     };
 
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
     this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
     this.submitSignUpHandler = this.submitSignUpHandler.bind(this);
+    this.submitLoginHandler = this.submitLoginHandler.bind(this);
     // this.state = {
     //   event_id: '5dc73845e648f477e4848644',
     //   items: [],
@@ -74,6 +76,46 @@ class App extends Component {
       .finally(() => {
         this.setState({
           username: '',
+          password: ''
+        });
+      });
+  }
+
+  submitLoginHandler(event) {
+    event.preventDefault();
+
+    axios
+      .post(
+        'user/login',
+        {
+          username: this.state.username,
+          password: this.state.password
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then(res => {
+        console.log('frontend');
+        // console.log(res);
+        // console.log(res.data);
+        // console.log(res.data.user_id);
+
+        this.setState({ userId: res.data.user_id });
+        console.log('state user id', res.data.user_id);
+
+        if (res.status === 200) return this.props.history.push('/events');
+        return this.props.history.push('/login');
+      })
+      .catch(err => {
+        console.log('error axios');
+        console.log(err);
+      })
+      .finally(() => {
+        this.setState({
           password: ''
         });
       });

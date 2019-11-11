@@ -1,13 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import axios from 'axios';
-
-import './styles/styles.scss';
+import axios from "axios";
+import EventInfo from "./components/EventInfo";
+import "./styles/styles.scss";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.createEvent = this.createEvent.bind(this);
+  }
+
+  createEvent(e) {
+    axios("/events/addevent")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.log("ERROR"));
   }
 
   render() {
@@ -23,23 +35,37 @@ class App extends Component {
         <div className="row">
           <span>
             <div id="RSVPBox" className="container">
-              <div className="RSVPList">
-                {Guests}
-              </div>
+              <div className="RSVPList">{Guests}</div>
               <div className="createGuest">
                 <button className="addButton">Add Guest</button>
-                <input/>
+                <input />
               </div>
             </div>
           </span>
           <span>
-            <div className="container">
-              <div><span>Party Name:</span><span></span></div>
-              <div><span>Host:</span><span></span></div>
-              <div><span>Address:</span><span></span></div>
-              <div><span>Type:</span><span></span></div>
-              <div><span>Info:</span><span></span></div>
-            </div>
+            <EventInfo createEvent={this.createEvent}></EventInfo>
+            {/* <div className="container">
+              <div>
+                <span>Party Name:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Host:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Address:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Type:</span>
+                <span></span>
+              </div>
+              <div>
+                <span>Info:</span>
+                <span></span>
+              </div>
+            </div> */}
           </span>
         </div>
         <div className="row">
@@ -49,12 +75,10 @@ class App extends Component {
         <div className="row">
           <span>
             <div id="suppliesBox" className="container">
-              <div className="supplyList">
-                {Supplies}
-              </div>
-              <div className="createSupplies" >
+              <div className="supplyList">{Supplies}</div>
+              <div className="createSupplies">
                 <button className="addButton">Add Supplies</button>
-                <input/>
+                <input />
               </div>
             </div>
           </span>
@@ -67,8 +91,12 @@ class App extends Component {
           <span className="title">Comments</span>
         </div>
         <div className="row">
-          <span><div className="container"></div></span>
-          <span><div className="container"></div></span>
+          <span>
+            <div className="container"></div>
+          </span>
+          <span>
+            <div className="container"></div>
+          </span>
         </div>
       </div>
     );

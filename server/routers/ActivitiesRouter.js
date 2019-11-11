@@ -4,7 +4,7 @@ const activitiesController = require("../controllers/ActivitiesController");
 
 const router = express.Router();
 
-router.get("/", activitiesController.getItems, (req, res) =>
+router.post("/", activitiesController.getItems, (req, res) =>
   res.status(200).json(res.locals.activity)
 );
 

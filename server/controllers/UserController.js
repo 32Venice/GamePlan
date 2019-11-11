@@ -50,6 +50,56 @@ userController.createUser = createUser = async (req, res, next) => {
   );
 };
 
+userController.verifyUser = verifyUser = async (req, res, next) => {
+  console.log('Log in');
+
+  // console.log(req);
+  if (req.body.username.length > 0 && req.body.password.length > 0) {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const values = [username];
+
+    await db.query(
+      'SELECT * FROM users WHERE username = $1',
+      values,
+      (err, response) => {
+        if (err) {
+          res.locals.error = err;
+          res.locals.success = false;
+          return next();
+        }
+
+        console.log(response.rows);
+        if (response.rows.length > 0) {
+          bcrypt.compare(password, response.rows[0].password, function(
+            err,
+            isMatch
+          ) {
+            if (err) return next(err);
+
+            if (isMatch) {
+              res.locals.id = response.rows[0].user_id;
+              res.locals.username = response.rows[0].username;
+              res.locals.success = true;
+              return next();
+            } else {
+              res.locals.success = false;
+              return next();
+            }
+          });
+        } else {
+          res.locals.success = false;
+          return next();
+        }
+      }
+    );
+  } else {
+    res.locals.success = false;
+    return next();
+  }
+};
+
 module.exports = userController;
 
 // db.query('SELECT * FROM users', null, (err, res) => {

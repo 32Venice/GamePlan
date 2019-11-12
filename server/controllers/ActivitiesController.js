@@ -10,11 +10,13 @@ ActivitiesController.addItem = (req, res, next) => {
   item['activityLikes'] = 0;
   item['activityClaimed'] = false;
   item['activityClaimedBy'] = '';
+  console.log(item)
 
   Event.findOneAndUpdate(
     { _id: event_id },
     { $push: { activity: item } },
-    (err, data) => {
+      { new: true },
+      (err, data) => {
       console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
@@ -49,7 +51,8 @@ ActivitiesController.deleteItem = (req, res, next) => {
   Event.findOneAndUpdate(
     { _id: event_id },
     { $pull: { activity: item } },
-    (err, data) => {
+      { new: true },
+      (err, data) => {
       console.log('MY DATA ---> ', data);
       if (err) {
         res.locals.error = err;
@@ -63,6 +66,48 @@ ActivitiesController.deleteItem = (req, res, next) => {
     }
   );
 };
+
+ActivitiesController.updateItem = (req, res, next) => {
+    console.log('in ActivitiesController.updateItem');
+    const {event_id, item} = req.body;
+
+    console.log(item);
+
+    const tempItem = {};
+    tempItem['activityName'] = item.activityName;
+    tempItem['activityClaimedBy'] = '';
+    tempItem['activityClaimed'] = false;
+
+    console.log('tempItem ------->', tempItem);
+    Event.findOneAndUpdate(
+        {_id: event_id},
+        {$pull: {activity: tempItem}},
+        {new: true},
+        (err, data) => {
+            if (err) {
+                res.locals.error = err;
+                res.locals.success = false;
+                return next();
+            }
+            Event.findOneAndUpdate(
+                {_id: event_id},
+                {$push: {activity: item}},
+                {new: true},
+                (err, data) => {
+                    if (err) {
+                        res.locals.error = err;
+                        res.locals.success = false;
+                        return next();
+                    }
+                    res.locals.items = data.activity;
+                    res.locals.success = true;
+                    return next();
+                }
+            );
+        }
+    );
+    console.log('item ------->', item);
+}
 
 // ----UPDATE-ITEMS----------------------------------------
 

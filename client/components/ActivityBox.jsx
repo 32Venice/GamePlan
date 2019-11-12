@@ -10,10 +10,10 @@ const ActivityBox = props => {
             id={props.Activities[i]._id}
             Name={props.Activities[i].activityName}
             Likes={props.Activities[i].activityLikes}
-            Claimed={props.Activities[i].activityClaimed}
+            claimActivityClickHandler={props.Activities[i].claimActivityClickHandler}
+            claimActivityChangeHandler={props.Activities[i].claimActivityChangeHandler}
             ClaimedBy={props.Activities[i].activityClaimedBy}
-            claimUpdate={props.claimUpdate}
-            claim={props.claim}/>);
+            />);
     }
 
     return (
@@ -22,8 +22,8 @@ const ActivityBox = props => {
                 {activityArr}
             </div>
             <div className="createActivity" >
-                <button className="addButton">Add Activity</button>
-                <input/>
+                <button onClick={props.ActivityClickHandler} className="addButton">Add Activity</button>
+                <input onChange={(e) => props.ActivityChangeHandler(e.target.value)} />
             </div>
         </div>
     )

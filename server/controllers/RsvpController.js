@@ -23,12 +23,15 @@ RsvpController.getGuests = (req, res, next) => {
 // ADD PERSON TO THE LIST 
 
 RsvpController.addGuest = (req, res, next) => {
-    const { user_name, event_id } = req.body;
+    const { guests, event_id } = req.body;
     console.log('This is RsvpController.addGuest')
 
     Event.findOneAndUpdate(
       { _id: event_id },
-      { $push: { guests: {'user_name': user_name} }},
+      { $push: { guests: {
+        'user_name': guests.user_name,
+        'rsvp': guests.rsvp
+    } }},
       (err, data) => {
         if (err) {
           res.locals.error = err;

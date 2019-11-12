@@ -4,7 +4,7 @@ import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
 import axios from 'axios';
 
-import './styles/styles.scss';
+import styles from './scss/application.scss';
 
 import Home from './components/home/Home';
 import Signup from './components/signup/Signup';
@@ -29,6 +29,14 @@ class App extends Component {
       newSupply: '',
       newActivity: '',
       activityClaimedBy: '',
+      eventId: '',
+      eventName: '',
+      eventHost: '',
+      eventAddress: '',
+      eventDescr: '',
+      contact: '',
+      eventType: ''
+
     };
 
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -41,11 +49,18 @@ class App extends Component {
     this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
     this.claimChangeHandler = this.claimChangeHandler.bind(this);
     this.claimClickHandler = this.claimClickHandler.bind(this);
+
     this.claimActivityChangeHandler = this.claimActivityChangeHandler.bind(this);
     this.claimActivityClickHandler = this.claimActivityClickHandler.bind(this);
     this.ActivityChangeHandler = this.ActivityChangeHandler.bind(this);
     this.ActivityClickHandler = this.ActivityClickHandler.bind(this);
 
+    this.eventNameChangeHandler = this.eventNameChangeHandler.bind(this);
+    this.eventHostChangeHandler = this.eventHostChangeHandler.bind(this);
+    this.eventAddressChangeHandler = this.eventAddressChangeHandler.bind(this);
+    this.eventDescrChangeHandler = this.eventDescrChangeHandler.bind(this);
+    this.contactChangeHandler = this.contactChangeHandler.bind(this);
+    this.eventTypeChangeHandler = this.eventTypeChangeHandler.bind(this);
   }
 
   SuppliesClickHandler() {
@@ -53,7 +68,7 @@ class App extends Component {
     item.itemName = this.state.newSupply;
     axios
       .post('/shoppinglist/addItem', {
-        event_id: '5dc9ae30a59286288c8bf539',
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
@@ -124,7 +139,7 @@ class App extends Component {
     console.log(item);
     axios
       .put('/shoppinglist/updateItem', {
-        event_id: '5dc9ae30a59286288c8bf539',
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
@@ -138,7 +153,7 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .post('/shoppinglist/', { event_id: '5dc9ae30a59286288c8bf539' })
+      .post('/shoppinglist/', { event_id: this.state.eventId })
       .then(res => {
         this.setState({ Supplies: [...res.data] });
       })
@@ -152,21 +167,31 @@ class App extends Component {
         .catch(err => console.log('Activities List: axios GET ERROR: ', err));
   }
 
-  createEvent(name, host, address, descr, cont, type) {
+  createEvent(event) {
+    event.preventDefault();
+
+    const eventHost = {};
+    eventHost.user_name = this.state.eventHost;
     axios
       .post('/events/addevent', {
-        eventName: name,
-        eventHost: host,
-        eventAddress: address,
-        eventDescr: descr,
-        contact: cont,
-        eventType: type
+        eventName: this.state.eventName,
+        eventHost: eventHost,
+        eventAddress: this.state.eventAddress,
+        eventDescr: this.state.eventDescr,
+        contact: this.state.contact,
+        eventType: this.state.eventType
       })
       .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        // console.log(data);
+        console.log('add event: ', res.data);
+        this.setState({
+          eventId: res.data._id,
+          eventName: res.data.eventName,
+          eventHost: res.data.eventHost.user_name,
+          eventAddress: res.data.eventAddress,
+          eventDescr: res.data.eventDescr,
+          contact: res.data.contact,
+          eventType: res.data.eventType
+        });
       })
       .catch(err => console.log('ERROR'));
   }
@@ -259,92 +284,36 @@ class App extends Component {
       });
   }
 
-  // Add back to create when frontend component is done to be able to test
-  // addItem(e) {
-  //   axios
-  //     .post(
-  //       '/shoppinglist/addItem',
-  //       {
-  //         item: this.state.itemToBeAdded,
-  //         event_id: this.state.event_id
-  //       },
-  //       {
-  //         headers: {
-  //           'Access-Control-Allow-Origin': '*',
-  //           'Content-Type': 'application/json'
-  //         }
-  //       }
-  //     )
-  //     .then(res => {
-  //       console.log(res);
-
-  //       this.setState({
-
-  //       })
-  //     });
-
-  // e.preventDefault();
-  // console.log(“in frontend “, this.todo.value);
-  // fetch(“/add”, {
-  //   method: “POST”,
-  //   headers: { “Content-Type”: “application/json” },
-  //   body: JSON.stringify({ item: this.todo.value })
-  // })
-  //   .then(res => {
-  //     this.todo.value = “”;
-  //     return res.json();
-  //   })
-  //   .catch(err => console.log(“ShoppingContainer: fetch POST ERROR: “, err));
-  // this.setState({
-  //   items: [this.todo.value, ...this.state.items]
-  // });
-  // }
-  // deleteItem(val) {
-  //   console.log(“MY VAL!!!!!!!!!!!“, val);
-  //   fetch(“/delete”, {
-  //     method: “DELETE”,
-  //     headers: { “content-type”: “application/json” },
-  //     body: JSON.stringify({ item: val })
-  //   })
-  //     .then(res => {
-  //       // console.log(“My res -->“, res);
-  //       location.reload();
-  //       return res.json();
-  //     })
-  //     .catch(err => console.log(“TodoItems: fetch DELETE ERROR: “, err));
-  // }
-  // componentWillMount() {
-  //   fetch(“/getAll”)
-  //     .then(res => {
-  //       return res.json();
-  //     })
-  //     .then(data => {
-  //       for (let i = data.length - 1; i >= 0; i--) {
-  //         myListItems.push(
-  //           <div>
-  //             <button
-  //               id=“compbutton”
-  //               key={i}
-  //               onClick={() => this.deleteItem(data[i].item)}
-  //             >
-  //               Complete Task
-  //             </button>
-  //             <div
-  //               className=“eachItem”
-  //               // key={i}
-  //               id={i}
-  //               // onClick={() => this.deleteItem(data[i].item)}
-  //             >
-  //               {data[i].item}
-  //             </div>
-  //           </div>
-  //         );
-  //       }
-  //       this.setState({ promiseIsResolved: true });
-  //       // console.log(“myListItems in fetch --> “, myListItems);
-  //     })
-  //     .catch(err => console.log(“ShoppingContainer: fetch GET ERROR: “, err));
-  // }
+  eventNameChangeHandler(event) {
+    this.setState({
+      eventName: event.target.value
+    });
+  }
+  eventHostChangeHandler(event) {
+    this.setState({
+      eventHost: event.target.value
+    });
+  }
+  eventAddressChangeHandler(event) {
+    this.setState({
+      eventAddress: event.target.value
+    });
+  }
+  eventDescrChangeHandler(event) {
+    this.setState({
+      eventDescr: event.target.value
+    });
+  }
+  contactChangeHandler(event) {
+    this.setState({
+      contact: event.target.value
+    });
+  }
+  eventTypeChangeHandler(event) {
+    this.setState({
+      eventType: event.target.value
+    });
+  }
 
   render() {
     return (
@@ -395,7 +364,21 @@ class App extends Component {
             />
           </span>
           <span>
-            <EventInfo createEvent={this.createEvent}></EventInfo>
+            <EventInfo
+              createEvent={this.createEvent}
+              eventName={this.state.eventName}
+              eventHost={this.state.eventHost}
+              eventAddress={this.state.eventAddress}
+              eventDescr={this.state.eventDescr}
+              contact={this.state.contact}
+              eventType={this.state.eventType}
+              eventNameChangeHandler={this.eventNameChangeHandler}
+              eventHostChangeHandler={this.eventHostChangeHandler}
+              eventAddressChangeHandler={this.eventAddressChangeHandler}
+              eventDescrChangeHandler={this.eventDescrChangeHandler}
+              contactChangeHandler={this.contactChangeHandler}
+              eventTypeChangeHandler={this.eventTypeChangeHandler}
+            ></EventInfo>
           </span>
         </div>
         <div className="row">

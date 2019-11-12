@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import ActivityItem from './ActivityItem.jsx';
+import React, { Component } from "react";
+import ActivityItem from "./ActivityItem.jsx";
 
 const ActivityBox = props => {
+  const activityArr = [];
 
-    const activityArr = [];
 
     for (let i = props.Activities.length - 1; i >= 0; i--) {
         activityArr.push(<ActivityItem
@@ -28,5 +28,6 @@ const ActivityBox = props => {
         </div>
     )
 }
+
 
 export default ActivityBox;

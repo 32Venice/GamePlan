@@ -1,68 +1,56 @@
 import React from 'react';
 
-let eventName;
-let eventHost;
-let eventAddress;
-let eventDescr;
-let contact;
-let eventType;
 const EventInfo = props => {
   return (
     <div>
-      <form
-        id="eventform"
-        onSubmit={props.createEvent(
-          eventName,
-          eventHost,
-          eventAddress,
-          eventDescr,
-          contact,
-          eventType
-        )}
-      >
+      <form id="eventform" onSubmit={props.createEvent}>
         <h3>Party Name: </h3>
         <input
           id="partyName"
           type="text"
           name="partyName"
-          ref={text => {
-            eventName = text;
-          }}
+          value={props.eventName}
+          onChange={props.eventNameChangeHandler}
         />
         <h3>Host: </h3>
         <input
           id="host"
           type="text"
           name="host"
-          ref={host => (eventHost = host)}
+          value={props.eventHost}
+          onChange={props.eventHostChangeHandler}
         />
         <h3>Address: </h3>
         <input
           id="address"
           type="text"
           name="address"
-          ref={address => (eventAddress = address)}
+          value={props.eventAddress}
+          onChange={props.eventAddressChangeHandler}
         />
         <h3>Info: </h3>
         <input
           id="info"
           type="text"
           name="info"
-          ref={descr => (eventDescr = descr)}
+          value={props.eventDescr}
+          onChange={props.eventDescrChangeHandler}
         />
         <h3>Contact: </h3>
         <input
           id="contact"
           type="text"
           name="contact"
-          ref={cont => (contact = cont)}
+          value={props.contact}
+          onChange={props.contactChangeHandler}
         />
         <h3>Type: </h3>
         <input
           id="type"
           type="text"
           name="type"
-          ref={type => (eventType = type)}
+          value={props.eventType}
+          onChange={props.eventTypeChangeHandler}
         />
         <input id="submit" type="submit" value="Save Event" />
       </form>

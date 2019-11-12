@@ -2,9 +2,9 @@ import React from "react";
 
 const SupplyItem = props => {
   return (
-    <div>
+    <div className="supplyItem">
       {props.Name}
-      {/* <span> Claimed By: </span> */}
+      <span> Claimed By: </span>
       {props.ClaimedBy}
       <input
         id="claimInput"

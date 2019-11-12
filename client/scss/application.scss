@@ -7,7 +7,6 @@ body {
 }
 #eventform {
   display: flex;
-  width: 400px;
   justify-content: flex-end;
   flex-direction: column;
   text-align: right;
@@ -20,9 +19,10 @@ body {
   border: 1px solid white;
   border-radius: 5px;
   outline: none;
-  width: 150px;
 }
 
+.createSupplies input,
+.createActivity input,
 .createGuest input {
   border: 1px solid white;
   border-radius: 5px;
@@ -31,20 +31,14 @@ body {
   width: 250px;
 }
 
-.createSupplies input {
-  border: 1px solid white;
-  border-radius: 5px;
-  outline: none;
-  padding: 4px 0;
-  width: 250px;
+#fetchedGuests {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px;
 }
 
-.createActivity input {
-  border: 1px solid white;
-  border-radius: 5px;
-  outline: none;
-  padding: 4px 0;
-  width: 250px;
+#fetchedGuests button {
+  margin: 0 5px;
 }
 
 h3,
@@ -56,6 +50,9 @@ input,
   margin: 0;
 }
 
+#partyName {
+  display: inline-block;
+}
 h3 {
   color: rgb(33, 32, 32);
   font-size: 16px;
@@ -77,20 +74,22 @@ h3 {
   border-color: #919191;
 }
 
-#suppliesBox {
+#suppliesBox,
+#activitiesBox,
+#createGuest {
   display: flex;
-  width: 400px;
+  width: 100%;
   justify-content: flex-end;
   flex-direction: column;
   text-align: right;
   padding: 10px;
+  justify-content: space-between;
 }
 
 #submit {
   margin: 5px;
   font-size: 16;
   position: relative;
-  //   right: -150px;
   width: 100px;
   cursor: pointer;
   &:hover {
@@ -98,9 +97,6 @@ h3 {
     color: white;
     border: 1px solid #919191;
   }
-  //   display: flex;
-  //   width: 400px;
-  //   justify-content: flex-end;
 }
 
 .row {
@@ -131,9 +127,6 @@ h1 {
 .home_buttons {
   margin: 10px 10px 30px 10px;
   border-color: white;
-
-  // display: flex;
-  // justify-content: center;
 }
 .container {
   border-style: solid;
@@ -153,15 +146,12 @@ h1 {
   justify-content: space-between;
 }
 
-.supplyList {
-  display: flex;
-  flex-direction: column;
+.createSupplies {
+  display: inline-block;
 }
-
-#suppliesBox {
+.supplyItem {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 button,

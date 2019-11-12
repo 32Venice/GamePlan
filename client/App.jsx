@@ -1,32 +1,40 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { Switch, Route, Link, withRouter } from "react-router-dom";
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
-import axios from "axios";
+import axios from 'axios';
 
-import styles from "./scss/application.scss";
+import styles from './scss/application.scss';
 
-import Home from "./components/home/Home";
-import Signup from "./components/signup/Signup";
-import Login from "./components/login/Login";
-import EventInfo from "./components/EventInfo";
+import Home from './components/home/Home';
+import Signup from './components/signup/Signup';
+import Login from './components/login/Login';
+import EventInfo from './components/EventInfo';
 
-import SuppliesBox from "./components/SuppliesBox";
-import RSVPBox from "./components/RSVPBox";
-import ActivityBox from "./components/ActivityBox";
+import SuppliesBox from './components/SuppliesBox';
+import RSVPBox from './components/RSVPBox';
+import ActivityBox from './components/ActivityBox';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
-      userId: "",
+      username: '',
+      password: '',
+      userId: '',
       Supplies: [],
       Activities: [],
       Guests: [],
-      claimedBy: "",
-      newSupply: ""
+      claimedBy: '',
+      newSupply: '',
+
+      eventId: '',
+      eventName: '',
+      eventHost: '',
+      eventAddress: '',
+      eventDescr: '',
+      contact: '',
+      eventType: ''
     };
 
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -39,20 +47,27 @@ class App extends Component {
     this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
     this.claimChangeHandler = this.claimChangeHandler.bind(this);
     this.claimClickHandler = this.claimClickHandler.bind(this);
+
+    this.eventNameChangeHandler = this.eventNameChangeHandler.bind(this);
+    this.eventHostChangeHandler = this.eventHostChangeHandler.bind(this);
+    this.eventAddressChangeHandler = this.eventAddressChangeHandler.bind(this);
+    this.eventDescrChangeHandler = this.eventDescrChangeHandler.bind(this);
+    this.contactChangeHandler = this.contactChangeHandler.bind(this);
+    this.eventTypeChangeHandler = this.eventTypeChangeHandler.bind(this);
   }
 
   SuppliesClickHandler() {
     const item = {};
     item.itemName = this.state.newSupply;
     axios
-      .post("/shoppinglist/addItem", {
-        event_id: "5dc9ae30a59286288c8bf539",
+      .post('/shoppinglist/addItem', {
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
         console.log(res.data.shoppingList);
         this.setState({
-          newSupply: "",
+          newSupply: '',
           Supplies: [...res.data.shoppingList]
         });
       });
@@ -72,14 +87,14 @@ class App extends Component {
     item.itemClaimedBy = this.state.claimedBy;
     console.log(item);
     axios
-      .put("/shoppinglist/updateItem", {
-        event_id: "5dc9ae30a59286288c8bf539",
+      .put('/shoppinglist/updateItem', {
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
         console.log(res.data);
         this.setState({
-          claimedBy: "",
+          claimedBy: '',
           Supplies: [...res.data.shoppingList]
         });
       });
@@ -87,30 +102,40 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .post("/shoppinglist/", { event_id: "5dc9ae30a59286288c8bf539" })
+      .post('/shoppinglist/', { event_id: this.state.eventId })
       .then(res => {
         this.setState({ Supplies: [...res.data] });
       })
-      .catch(err => console.log("Shopping List: axios GET ERROR: ", err));
+      .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
   }
 
-  createEvent(name, host, address, descr, cont, type) {
+  createEvent(event) {
+    event.preventDefault();
+
+    const eventHost = {};
+    eventHost.user_name = this.state.eventHost;
     axios
-      .post("/events/addevent", {
-        eventName: name,
-        eventHost: host,
-        eventAddress: address,
-        eventDescr: descr,
-        contact: cont,
-        eventType: type
+      .post('/events/addevent', {
+        eventName: this.state.eventName,
+        eventHost: eventHost,
+        eventAddress: this.state.eventAddress,
+        eventDescr: this.state.eventDescr,
+        contact: this.state.contact,
+        eventType: this.state.eventType
       })
       .then(res => {
-        return res.json();
+        console.log('add event: ', res.data);
+        this.setState({
+          eventId: res.data._id,
+          eventName: res.data.eventName,
+          eventHost: res.data.eventHost.user_name,
+          eventAddress: res.data.eventAddress,
+          eventDescr: res.data.eventDescr,
+          contact: res.data.contact,
+          eventType: res.data.eventType
+        });
       })
-      .then(data => {
-        // console.log(data);
-      })
-      .catch(err => console.log("ERROR"));
+      .catch(err => console.log('ERROR'));
   }
 
   usernameChangeHandler(event) {
@@ -130,33 +155,33 @@ class App extends Component {
 
     axios
       .post(
-        "user/signup",
+        'user/signup',
         {
           username: this.state.username,
           password: this.state.password
         },
         {
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
           }
         }
       )
       .then(res => {
-        console.log("frontend");
+        console.log('frontend');
         console.log(res);
         console.log(res.data);
-        if (res.status === 200) return this.props.history.push("/login");
-        return this.props.history.push("/signup");
+        if (res.status === 200) return this.props.history.push('/login');
+        return this.props.history.push('/signup');
       })
       .catch(err => {
-        console.log("error axios");
+        console.log('error axios');
         console.log(err);
       })
       .finally(() => {
         this.setState({
-          username: "",
-          password: ""
+          username: '',
+          password: ''
         });
       });
   }
@@ -166,127 +191,71 @@ class App extends Component {
 
     axios
       .post(
-        "user/login",
+        'user/login',
         {
           username: this.state.username,
           password: this.state.password
         },
         {
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
           }
         }
       )
       .then(res => {
-        console.log("frontend");
+        console.log('frontend');
         // console.log(res);
         // console.log(res.data);
         // console.log(res.data.user_id);
 
         this.setState({ userId: res.data.user_id });
-        console.log("state user id", res.data.user_id);
+        console.log('state user id', res.data.user_id);
 
-        if (res.status === 200) return this.props.history.push("/events");
-        return this.props.history.push("/login");
+        if (res.status === 200) return this.props.history.push('/events');
+        return this.props.history.push('/login');
       })
       .catch(err => {
-        console.log("error axios");
+        console.log('error axios');
         console.log(err);
       })
       .finally(() => {
         this.setState({
-          password: ""
+          password: ''
         });
       });
   }
 
-  // Add back to create when frontend component is done to be able to test
-  // addItem(e) {
-  //   axios
-  //     .post(
-  //       '/shoppinglist/addItem',
-  //       {
-  //         item: this.state.itemToBeAdded,
-  //         event_id: this.state.event_id
-  //       },
-  //       {
-  //         headers: {
-  //           'Access-Control-Allow-Origin': '*',
-  //           'Content-Type': 'application/json'
-  //         }
-  //       }
-  //     )
-  //     .then(res => {
-  //       console.log(res);
-
-  //       this.setState({
-
-  //       })
-  //     });
-
-  // e.preventDefault();
-  // console.log(“in frontend “, this.todo.value);
-  // fetch(“/add”, {
-  //   method: “POST”,
-  //   headers: { “Content-Type”: “application/json” },
-  //   body: JSON.stringify({ item: this.todo.value })
-  // })
-  //   .then(res => {
-  //     this.todo.value = “”;
-  //     return res.json();
-  //   })
-  //   .catch(err => console.log(“ShoppingContainer: fetch POST ERROR: “, err));
-  // this.setState({
-  //   items: [this.todo.value, ...this.state.items]
-  // });
-  // }
-  // deleteItem(val) {
-  //   console.log(“MY VAL!!!!!!!!!!!“, val);
-  //   fetch(“/delete”, {
-  //     method: “DELETE”,
-  //     headers: { “content-type”: “application/json” },
-  //     body: JSON.stringify({ item: val })
-  //   })
-  //     .then(res => {
-  //       // console.log(“My res -->“, res);
-  //       location.reload();
-  //       return res.json();
-  //     })
-  //     .catch(err => console.log(“TodoItems: fetch DELETE ERROR: “, err));
-  // }
-  // componentWillMount() {
-  //   fetch(“/getAll”)
-  //     .then(res => {
-  //       return res.json();
-  //     })
-  //     .then(data => {
-  //       for (let i = data.length - 1; i >= 0; i--) {
-  //         myListItems.push(
-  //           <div>
-  //             <button
-  //               id=“compbutton”
-  //               key={i}
-  //               onClick={() => this.deleteItem(data[i].item)}
-  //             >
-  //               Complete Task
-  //             </button>
-  //             <div
-  //               className=“eachItem”
-  //               // key={i}
-  //               id={i}
-  //               // onClick={() => this.deleteItem(data[i].item)}
-  //             >
-  //               {data[i].item}
-  //             </div>
-  //           </div>
-  //         );
-  //       }
-  //       this.setState({ promiseIsResolved: true });
-  //       // console.log(“myListItems in fetch --> “, myListItems);
-  //     })
-  //     .catch(err => console.log(“ShoppingContainer: fetch GET ERROR: “, err));
-  // }
+  eventNameChangeHandler(event) {
+    this.setState({
+      eventName: event.target.value
+    });
+  }
+  eventHostChangeHandler(event) {
+    this.setState({
+      eventHost: event.target.value
+    });
+  }
+  eventAddressChangeHandler(event) {
+    this.setState({
+      eventAddress: event.target.value
+    });
+  }
+  eventDescrChangeHandler(event) {
+    this.setState({
+      eventDescr: event.target.value
+    });
+  }
+  contactChangeHandler(event) {
+    this.setState({
+      contact: event.target.value
+    });
+  }
+  eventTypeChangeHandler(event) {
+    this.setState({
+      eventType: event.target.value
+    });
+  }
 
   render() {
     return (
@@ -337,7 +306,21 @@ class App extends Component {
             />
           </span>
           <span>
-            <EventInfo createEvent={this.createEvent}></EventInfo>
+            <EventInfo
+              createEvent={this.createEvent}
+              eventName={this.state.eventName}
+              eventHost={this.state.eventHost}
+              eventAddress={this.state.eventAddress}
+              eventDescr={this.state.eventDescr}
+              contact={this.state.contact}
+              eventType={this.state.eventType}
+              eventNameChangeHandler={this.eventNameChangeHandler}
+              eventHostChangeHandler={this.eventHostChangeHandler}
+              eventAddressChangeHandler={this.eventAddressChangeHandler}
+              eventDescrChangeHandler={this.eventDescrChangeHandler}
+              contactChangeHandler={this.contactChangeHandler}
+              eventTypeChangeHandler={this.eventTypeChangeHandler}
+            ></EventInfo>
           </span>
         </div>
         <div className="row">

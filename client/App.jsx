@@ -61,7 +61,7 @@ class App extends Component {
     item.itemName = this.state.newSupply;
     axios
       .post('/shoppinglist/addItem', {
-        event_id: '5dc9ae30a59286288c8bf539',
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
@@ -88,7 +88,7 @@ class App extends Component {
     console.log(item);
     axios
       .put('/shoppinglist/updateItem', {
-        event_id: '5dc9ae30a59286288c8bf539',
+        event_id: this.state.eventId,
         item: item
       })
       .then(res => {
@@ -102,7 +102,7 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .post('/shoppinglist/', { event_id: '5dc9ae30a59286288c8bf539' })
+      .post('/shoppinglist/', { event_id: this.state.eventId })
       .then(res => {
         this.setState({ Supplies: [...res.data] });
       })

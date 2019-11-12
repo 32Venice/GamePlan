@@ -124,10 +124,16 @@ h1 {
 .home_label {
   margin: 20px;
 }
-
+.home_links {
+  display: flex;
+  justify-content: center;
+}
 .home_buttons {
   margin: 10px 10px 30px 10px;
   border-color: white;
+
+  // display: flex;
+  // justify-content: center;
 }
 .container {
   border-style: solid;

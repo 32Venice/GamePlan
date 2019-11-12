@@ -20,6 +20,15 @@ body {
   border: 1px solid white;
   border-radius: 5px;
   outline: none;
+  width: 150px;
+}
+
+.createGuest input {
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  padding: 4px 0;
+  width: 250px;
 }
 
 .createSupplies input {
@@ -29,6 +38,15 @@ body {
   padding: 4px 0;
   width: 250px;
 }
+
+.createActivity input {
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  padding: 4px 0;
+  width: 250px;
+}
+
 h3,
 input,
 #claimbtn,
@@ -70,7 +88,7 @@ h3 {
 
 #submit {
   margin: 5px;
-  font-size: 14;
+  font-size: 16;
   position: relative;
   //   right: -150px;
   width: 100px;
@@ -96,12 +114,21 @@ h1 {
   color: #0d475c;
 }
 
-.title {
+.title,
+.home_label {
   font-size: 20pt;
   font-weight: bold;
   color: #0d475c;
 }
 
+.home_label {
+  margin: 20px;
+}
+
+.home_buttons {
+  margin: 10px 10px 30px 10px;
+  border-color: white;
+}
 .container {
   border-style: solid;
   background-color: white;
@@ -131,7 +158,8 @@ h1 {
   justify-content: space-between;
 }
 
-button {
+button,
+.addButton {
   font-size: 16px;
   border-radius: 5px;
   width: 100px;

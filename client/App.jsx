@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
-import axios from 'axios';
+import axios from "axios";
 
-import './styles/styles.scss';
 import SuppliesBox from "./components/SuppliesBox";
 import RSVPBox from "./components/RSVPBox";
 import ActivityBox from "./components/ActivityBox";
 import EventInfo from "./components/EventInfo";
 
+import styles from "./scss/application.scss";
 
 class App extends Component {
   constructor(props) {
@@ -16,60 +16,67 @@ class App extends Component {
       Supplies: [],
       Activities: [],
       Guests: [],
-      claimedBy: '',
-        newSupply: ''
+      claimedBy: "",
+      newSupply: ""
     };
-  this.createEvent = this.createEvent.bind(this);
-  this.SuppliesChangeHandler = this.SuppliesChangeHandler.bind(this);
-  this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
-  this.claimChangeHandler = this.claimChangeHandler.bind(this);
-  this.claimClickHandler = this.claimClickHandler.bind(this);
+    this.createEvent = this.createEvent.bind(this);
+    this.SuppliesChangeHandler = this.SuppliesChangeHandler.bind(this);
+    this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
+    this.claimChangeHandler = this.claimChangeHandler.bind(this);
+    this.claimClickHandler = this.claimClickHandler.bind(this);
   }
 
+  SuppliesClickHandler() {
+    const item = {};
+    item.itemName = this.state.newSupply;
+    axios
+      .post("/shoppinglist/addItem", {
+        event_id: "5dc9ae30a59286288c8bf539",
+        item: item
+      })
+      .then(res => {
+        console.log(res.data.shoppingList);
+        this.setState({
+          newSupply: "",
+          Supplies: [...res.data.shoppingList]
+        });
+      });
+  }
 
-    SuppliesClickHandler() {
-      const item = {};
-      item.itemName = this.state.newSupply;
-      axios.post('/shoppinglist/addItem', {event_id: '5dc9ae30a59286288c8bf539', item: item})
-          .then(res => {
-              console.log(res.data.shoppingList)
-              this.setState({
-                  newSupply: '',
-                  Supplies: [...res.data.shoppingList]
-              })
-          })
-    }
-
-    SuppliesChangeHandler(value) {
-        this.setState({newSupply: value})
-    }
+  SuppliesChangeHandler(value) {
+    this.setState({ newSupply: value });
+  }
 
   claimChangeHandler(value) {
-      this.setState({claimedBy: value})
+    this.setState({ claimedBy: value });
   }
 
   claimClickHandler(value) {
-      const item = {};
-      item.itemName = value;
-      item.itemClaimedBy = this.state.claimedBy;
-      console.log(item)
-      axios.put('/shoppinglist/updateItem', {event_id: '5dc9ae30a59286288c8bf539', item: item})
-          .then(res => {
-              console.log(res.data)
-              this.setState({
-                  claimedBy: '',
-                  Supplies: [...res.data.shoppingList]
-              })
-          })
+    const item = {};
+    item.itemName = value;
+    item.itemClaimedBy = this.state.claimedBy;
+    console.log(item);
+    axios
+      .put("/shoppinglist/updateItem", {
+        event_id: "5dc9ae30a59286288c8bf539",
+        item: item
+      })
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          claimedBy: "",
+          Supplies: [...res.data.shoppingList]
+        });
+      });
   }
 
   componentDidMount() {
-    axios.post('/shoppinglist/', {event_id: '5dc9ae30a59286288c8bf539'})
-        .then(res => {
-            this.setState({ Supplies: [...res.data] })
-        })
-        .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
-
+    axios
+      .post("/shoppinglist/", { event_id: "5dc9ae30a59286288c8bf539" })
+      .then(res => {
+        this.setState({ Supplies: [...res.data] });
+      })
+      .catch(err => console.log("Shopping List: axios GET ERROR: ", err));
   }
 
   createEvent(name, host, address, descr, cont, type) {
@@ -89,11 +96,9 @@ class App extends Component {
         // console.log(data);
       })
       .catch(err => console.log("ERROR"));
-
   }
 
   render() {
-
     return (
       <div>
         <div className="row">
@@ -102,7 +107,11 @@ class App extends Component {
         </div>
         <div className="row">
           <span>
-            <RSVPBox Guests={this.state.Guests} id="RSVPBox" className="container" />
+            <RSVPBox
+              Guests={this.state.Guests}
+              id="RSVPBox"
+              className="container"
+            />
           </span>
           <span>
             <EventInfo createEvent={this.createEvent}></EventInfo>
@@ -114,10 +123,21 @@ class App extends Component {
         </div>
         <div className="row">
           <span>
-            <SuppliesBox SuppliesClickHandler={this.SuppliesClickHandler} SuppliesChangeHandler={this.SuppliesChangeHandler} claimClickHandler={this.claimClickHandler} claimChangeHandler={this.claimChangeHandler} Supplies={this.state.Supplies} id="suppliesBox" className="container" />
+            <SuppliesBox
+              SuppliesClickHandler={this.SuppliesClickHandler}
+              SuppliesChangeHandler={this.SuppliesChangeHandler}
+              claimClickHandler={this.claimClickHandler}
+              claimChangeHandler={this.claimChangeHandler}
+              Supplies={this.state.Supplies}
+              id="suppliesBox"
+              className="container"
+            />
           </span>
           <span>
-            <ActivityBox Activities={this.state.Activities} className="container" />
+            <ActivityBox
+              Activities={this.state.Activities}
+              className="container"
+            />
           </span>
         </div>
         <div className="row">

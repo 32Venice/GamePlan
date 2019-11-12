@@ -27,7 +27,8 @@ class App extends Component {
       Guests: [],
       claimedBy: '',
       newSupply: '',
-
+      newActivity: '',
+      activityClaimedBy: '',
       eventId: '',
       eventName: '',
       eventHost: '',
@@ -35,6 +36,7 @@ class App extends Component {
       eventDescr: '',
       contact: '',
       eventType: ''
+
     };
 
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -47,6 +49,11 @@ class App extends Component {
     this.SuppliesClickHandler = this.SuppliesClickHandler.bind(this);
     this.claimChangeHandler = this.claimChangeHandler.bind(this);
     this.claimClickHandler = this.claimClickHandler.bind(this);
+
+    this.claimActivityChangeHandler = this.claimActivityChangeHandler.bind(this);
+    this.claimActivityClickHandler = this.claimActivityClickHandler.bind(this);
+    this.ActivityChangeHandler = this.ActivityChangeHandler.bind(this);
+    this.ActivityClickHandler = this.ActivityClickHandler.bind(this);
 
     this.eventNameChangeHandler = this.eventNameChangeHandler.bind(this);
     this.eventHostChangeHandler = this.eventHostChangeHandler.bind(this);
@@ -73,12 +80,56 @@ class App extends Component {
       });
   }
 
+  ActivityClickHandler() {
+    const item = {};
+    item.activityName = this.state.newActivity;
+    axios
+        .post('/activities/addItem', {
+          event_id: '5dc9ae30a59286288c8bf539',
+          item: item
+        })
+        .then(res => {
+          console.log(res.data.activity);
+          this.setState({
+            newSupply: '',
+            Activities: [...res.data.activity]
+          });
+        });
+  }
+
   SuppliesChangeHandler(value) {
     this.setState({ newSupply: value });
   }
 
+  ActivityChangeHandler(value) {
+    this.setState({ newActivity: value });
+  }
+
   claimChangeHandler(value) {
     this.setState({ claimedBy: value });
+  }
+
+  claimActivityChangeHandler(value) {
+    console.log(value)
+    this.setState({ activityClaimedBy: value });
+  }
+
+  claimActivityClickHandler() {
+    const item = {};
+    item.activityName = value;
+    item.activityClaimedBy = this.state.activityClaimedBy;
+    axios
+        .put('/activities/updateItem', {
+          event_id: '5dc9ae30a59286288c8bf539',
+          item: item
+        })
+        .then(res => {
+          console.log(res.data.activity);
+          this.setState({
+            activityClaimedBy: '',
+            Activities: [...res.data.activity]
+          });
+        });
   }
 
   claimClickHandler(value) {
@@ -107,6 +158,13 @@ class App extends Component {
         this.setState({ Supplies: [...res.data] });
       })
       .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
+
+    axios
+        .post('/activities/', { event_id: '5dc9ae30a59286288c8bf539' })
+        .then(res => {
+          this.setState({ Activities: [...res.data] });
+        })
+        .catch(err => console.log('Activities List: axios GET ERROR: ', err));
   }
 
   createEvent(event) {
@@ -341,7 +399,12 @@ class App extends Component {
           </span>
           <span>
             <ActivityBox
+                claimActivityClickHandler={this.claimActivityClickHandler}
+                claimActivityChangeHandler={this.claimActivityChangeHandler}
+                ActivityChangeHandler={this.ActivityChangeHandler}
+                ActivityClickHandler={this.ActivityClickHandler}
               Activities={this.state.Activities}
+
               className="container"
             />
           </span>

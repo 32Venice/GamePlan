@@ -5,8 +5,10 @@ const ActivityItem = props => {
     return (
         <div>
             {props.Name}
-            <input onChange={(e) => props.claimUpdate(e)}/>
-            <button onClick={props.claim}>Claim</button>
+            <span> Claimed By: </span>
+            {props.ClaimedBy}
+            <input onChange={(e) => props.claimActivityChangeHandler(e.target.value)}/>
+            <button onClick={() => props.claimActivityClickHandler}>Claim</button>
         </div>
     )
 }

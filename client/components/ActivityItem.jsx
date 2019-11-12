@@ -4,7 +4,7 @@ const ActivityItem = props => {
   return (
     <div>
       {props.Name}
-      <span> Claimed By: </span>
+      <span> - Claimed By: </span>
       {props.ClaimedBy}
       <input
         id="claimInput"

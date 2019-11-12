@@ -4,7 +4,7 @@ const SupplyItem = props => {
   return (
     <div className="supplyItem">
       {props.Name}
-      <span> Claimed By: </span>
+      <span> - Claimed By: </span>
       {props.ClaimedBy}
       <input
         id="claimInput"

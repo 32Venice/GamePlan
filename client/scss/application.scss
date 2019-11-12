@@ -31,6 +31,9 @@ body {
   width: 250px;
 }
 
+.createGuest .addButton {
+  margin: 5px;
+}
 #fetchedGuests {
   display: flex;
   justify-content: flex-end;
@@ -151,7 +154,7 @@ h1 {
 }
 .supplyItem {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 button,

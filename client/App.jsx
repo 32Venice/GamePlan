@@ -35,8 +35,7 @@ class App extends Component {
       eventAddress: '',
       eventDescr: '',
       contact: '',
-      eventType: ''
-
+      eventType: '',
     };
 
     this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -85,7 +84,7 @@ class App extends Component {
     item.activityName = this.state.newActivity;
     axios
         .post('/activities/addItem', {
-          event_id: '5dc9ae30a59286288c8bf539',
+          event_id: this.state.eventId,
           item: item
         })
         .then(res => {
@@ -120,7 +119,7 @@ class App extends Component {
     item.activityClaimedBy = this.state.activityClaimedBy;
     axios
         .put('/activities/updateItem', {
-          event_id: '5dc9ae30a59286288c8bf539',
+          event_id: this.state.eventId,
           item: item
         })
         .then(res => {
@@ -146,7 +145,7 @@ class App extends Component {
         console.log(res.data);
         this.setState({
           claimedBy: '',
-          Supplies: [...res.data.shoppingList]
+          Supplies: [...res.data]
         });
       });
   }
@@ -160,7 +159,7 @@ class App extends Component {
       .catch(err => console.log('Shopping List: axios GET ERROR: ', err));
 
     axios
-        .post('/activities/', { event_id: '5dc9ae30a59286288c8bf539' })
+        .post('/activities/', { event_id: this.state.eventId })
         .then(res => {
           this.setState({ Activities: [...res.data] });
         })
